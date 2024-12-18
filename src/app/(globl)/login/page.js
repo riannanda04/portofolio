@@ -15,7 +15,7 @@ export default function Login() {
     });
     let response = await res.json();
     console.log(response.status);
-    if (res.status == 200) {
+    if (res.ok) {
       router.push("/admin");
     }
   };
