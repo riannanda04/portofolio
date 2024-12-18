@@ -6,14 +6,19 @@ import { comparePassword, encrypt} from "../../../lib/session"
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_NAME);
+    // console.log(db);
 
     switch (req.method) {
+        
         case "POST":
+            console.log(req);
             try{
                 let tokenData={};
                 let token='';
+                // console.log(req.body);
                 
-                const body = JSON.parse(req.body)
+                const body = JSON.parse(req.body);
+                console.log(body);
 
                 if( body.email == ""){
                     throw new Error('email is required')
@@ -25,6 +30,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
                 const users = await db.collection("users")
                     .find({email: body.email }).toArray(); 
+
 
                 if( users.length > 0 && await comparePassword(body.password, users[0].password )){
                      tokenData = {

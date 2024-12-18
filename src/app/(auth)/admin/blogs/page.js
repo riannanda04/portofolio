@@ -158,6 +158,7 @@ export default function AdminBlogs() {
   return (
     <>
       <Card title="Blogs" style="mt-5" showAddBtn onAddNew={onAddNew}>
+        <div className="overflow-x-auto">
         <table className="table-auto w-full">
           <Toaster />
           <thead>
@@ -198,12 +199,14 @@ export default function AdminBlogs() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </Card>
 
       <Card title="Comments" style="mt-5">
-        <table className="table-auto w-full">
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full">
           <thead>
             <tr>
               <th className="table-head border-blue-gray-100">No</th>
@@ -240,8 +243,9 @@ export default function AdminBlogs() {
                 </tr>
               ));
             })}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </Card>
 
       {replyComment && (

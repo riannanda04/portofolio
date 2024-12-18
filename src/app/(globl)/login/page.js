@@ -8,17 +8,30 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const onSubmitLogin = async () => {
-    const res = await fetch(`/api/auth/login`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    let response = await res.json();
-    console.log(response.status);
-    if (res.ok) {
-      router.push("/admin");
+
+  const onSubmitLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/auth/login`, {
+        method: "POST",
+        // headers: {
+        //   "Content-Type": "application/json", // Set Content-Type
+        // },
+        body: JSON.stringify({email: data.email, password: data.password}), // Ensure data is stringified
+      });
+  
+      if (res.ok) {
+        router.push("/admin");
+      } else {
+        const errorData = await res.json();
+        alert(`Login failed: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed. Please try again.");
     }
   };
+  
 
   const inputHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
