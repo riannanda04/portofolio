@@ -38,7 +38,7 @@ export default function Login() {
           </h2>
         </div>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="" method="POST" className="space-y-6">
+          <form onSubmit={onSubmitLogin} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -91,8 +91,7 @@ export default function Login() {
 
             <div>
               <button
-                type="button"
-                onClick={onSubmitLogin}
+                type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
