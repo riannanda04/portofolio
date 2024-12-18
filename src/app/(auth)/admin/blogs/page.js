@@ -7,15 +7,16 @@ import { Toaster, toast } from "sonner";
 
 export default function AdminBlogs() {
   const router = useRouter();
+  const [data, setData] = useState([]);
   const [modal, setModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
-  const [blogs, setBlogs] = useState([]);
   const [comments, setComments] = useState([]);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [isOkOnly, setIsOkOnly] = useState(true);
   const [deleteId, setDeleteId] = useState(null);
   const [deleteType, setDeleteType] = useState(null); // Track the delete type (blog/comment)
+  const [modalBtnOk, setModalBtnOk] = useState("Delete");
 
   // State for replying to comments
   const [replyComment, setReplyComment] = useState(null);
@@ -26,16 +27,16 @@ export default function AdminBlogs() {
   };
 
   const onConfirmDelete = (id) => {
+    setModal(true);
     setIsOkOnly(false);
     setDeleteType("blog"); // Set the type to blog
-    setModal(true);
     setModalBtnOk("Delete");
     setModalMessage("Are you sure you want to delete this blog?");
     setModalTitle("Confirm");
     setDeleteId(id);
   };
   const onCancel = () => {
-    setModal(true);
+    setModal(false);
   };
 
   const onConfirmCommentDelete = (commentId) => {
@@ -66,7 +67,7 @@ export default function AdminBlogs() {
       setModalBtnOk("OK");
 
       if (deleteType === "blog") {
-        setFilteredBlogs((prevData) =>
+        setData((prevData) =>
           prevData.filter((item) => item._id !== deleteId)
         );
       } else {
@@ -89,14 +90,14 @@ export default function AdminBlogs() {
     try {
       const res = await fetch("/api/blogs");
       let responseData = await res.json();
-      setBlogs(responseData.data);
+      setData(responseData.data);
       setFilteredBlogs(responseData.data);
 
       const commentsData = await Promise.all(
-        responseData.data.map(async (blog) => {
-          const commentRes = await fetch(`/api/comment/${blog._id}`);
+        responseData.data.map(async (data) => {
+          const commentRes = await fetch(`/api/comment/${data._id}`);
           const commentData = await commentRes.json();
-          return { blogTitle: blog.title, comments: commentData.data || [] };
+          return { ...data, comments: commentData.data || [] };
         })
       );
       setComments(commentsData);
@@ -167,14 +168,14 @@ export default function AdminBlogs() {
               <th className="table-head border-blue-gray-100">Title</th>
               <th className="table-head border-blue-gray-100">Sub Title</th>
               <th className="table-head border-blue-gray-100">
-                Category Blogs
+                Category
               </th>
               <th className="table-head border-blue-gray-100">Content</th>
               <th className="table-head border-blue-gray-100">Action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredBlogs.map((item, key) => (
+            {data.map((item, key) => (
               <tr key={key} className="border-b border-blue-gray-50">
                 <td className="p-2 text-center">{key + 1}</td>
                 <td className="p-2 text-center">{item.title}</td>
@@ -218,10 +219,10 @@ export default function AdminBlogs() {
           </thead>
           <tbody>
             {comments.map((item, index) => {
-              return item.comments?.map((comment, key) => (
+              return item.comments.map((comment, key) => (
                 <tr key={key} className="border-b border-blue-gray-50">
                   <td className="p-2 text-center">{index + 1}</td>
-                  <td className="p-2 text-center">{item.blogTitle}</td>
+                  <td className="p-2 text-center">{item.title}</td>
                   <td className="p-2 text-center">{comment.name}</td>
                   <td className="p-2 text-center">{comment.comment}</td>
                   <td className="p-2 text-center">
