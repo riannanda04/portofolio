@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-primary {
+  @apply mx-1 relative flex w-full h-9 items-center justify-center px-4 before:absolute before:inset-0 before:rounded-xl before:bg-indigo-600 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max;
+}
+.btn-primary-outline {
+  @apply before:bg-white mx-1 relative h-9 flex w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-xl before:border before:border-gray-300 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max;
+}
+
+.btn-link{
+    @apply hover:text-indigo-600 
+}
+
+.my-input-text {
+  @apply p-2 border rounded-md bg-gray-100 focus:bg-white;
+}
+
+.table-head{
+  @apply p-2 border-b  bg-gray-100
+}
+
+body {
+  @apply bg-gray-100;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
